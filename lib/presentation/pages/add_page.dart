@@ -262,7 +262,7 @@ class _AddPageState extends State<AddPage> {
 
           final data = BloodPressureModel(
             tanggal: DateTime.now().toString().split(' ')[0],
-            jam: TimeOfDay.now().format(context),
+            jam: formatJam(),
             sistolik1: int.parse(s1.text),
             diastolik1: int.parse(d1.text),
             sistolik2: int.parse(s2.text),

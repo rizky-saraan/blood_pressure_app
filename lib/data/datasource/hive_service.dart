@@ -9,8 +9,8 @@ class HiveService {
     await box.add(data);
   }
 
-  Future<void> delete(int index) async {
-    await box.deleteAt(index);
+  Future<void> delete(BloodPressureModel data) async {
+    await data.delete();
   }
 
   Future<void> edit(int index, BloodPressureModel newData) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/utils/helper.dart';
 import '../../data/models/blood_pressure_model.dart';
 
 class BPCard extends StatelessWidget {
@@ -153,7 +154,7 @@ class BPCard extends StatelessWidget {
                                 size: 12, color: Colors.grey),
                             const SizedBox(width: 4),
                             Text(
-                              "${data.tanggal} • ${data.jam}",
+                              formatTanggalJam(data.tanggal, data.jam),
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.grey),
                             ),

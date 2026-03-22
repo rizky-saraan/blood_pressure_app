@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                       return BPCard(
                           data: state.data[i],
                           onDelete: () {
-                            context.read<BPBloc>().add(DeleteBP(i));
+                            context.read<BPBloc>().add(DeleteBP(state.data[i]));
                           },
                           onEdit: () => Navigator.push(
                               context,
