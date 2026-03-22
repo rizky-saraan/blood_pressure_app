@@ -27,7 +27,7 @@ class BPBloc extends Bloc<BPEvent, BPState> {
     });
 
     on<EditBP>((event, emit) async {
-      await service.edit(event.index,event.data);
+      await service.edit(event.oldData, event.newData);
       emit(BPLoaded(service.getAll()));
     });
   }
@@ -50,9 +50,9 @@ class DeleteBP extends BPEvent {
 }
 
 class EditBP extends BPEvent {
-  final int index;
-  final BloodPressureModel data;
-  EditBP(this.index, this.data);
+  final BloodPressureModel oldData;
+  final BloodPressureModel newData;
+  EditBP(this.oldData, this.newData);
 }
 
 class LoadBP extends BPEvent {}

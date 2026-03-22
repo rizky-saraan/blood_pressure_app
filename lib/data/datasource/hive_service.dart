@@ -13,8 +13,9 @@ class HiveService {
     await data.delete();
   }
 
-  Future<void> edit(int index, BloodPressureModel newData) async {
-    await box.putAt(index, newData);
+  Future<void> edit(
+      BloodPressureModel oldData, BloodPressureModel newData) async {
+    await box.put(oldData.key, newData);
   }
 
   List<BloodPressureModel> getAll() => box.values.toList().reversed.toList();

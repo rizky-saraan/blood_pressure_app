@@ -308,7 +308,7 @@ class _EditPageState extends State<EditPage> {
             aktivitas: aktivitasController.text.trim(),
           );
 
-          context.read<BPBloc>().add(EditBP(widget.index, updated));
+          context.read<BPBloc>().add(EditBP(widget.data, updated));
           Navigator.pop(context);
         },
         child: const Text(
