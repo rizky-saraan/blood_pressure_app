@@ -86,7 +86,7 @@ class HomePage extends StatelessWidget {
       ),
       child: const Row(
         children: [
-          Icon(Icons.favorite, color: Colors.white, size: 40),
+          Icon(Icons.monitor_heart_outlined, color: Colors.white, size: 40),
           SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

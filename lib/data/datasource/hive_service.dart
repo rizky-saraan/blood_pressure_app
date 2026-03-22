@@ -17,5 +17,5 @@ class HiveService {
     await box.putAt(index, newData);
   }
 
-  List<BloodPressureModel> getAll() => box.values.toList();
+  List<BloodPressureModel> getAll() => box.values.toList().reversed.toList();
 }

@@ -73,6 +73,7 @@ class _EditPageState extends State<EditPage> {
                 },
               ),
               _kondisiDropdown(),
+              SizedBox(height: 10),
               _modernInput(
                 controller: aktivitasController,
                 label: "Aktivitas Sebelum Pengukuran",
