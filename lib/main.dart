@@ -6,6 +6,7 @@ import 'core/theme/app_theme.dart';
 import 'data/datasource/hive_service.dart';
 import 'data/models/blood_pressure_model.dart';
 import 'presentation/bloc/bp_bloc.dart';
+import 'presentation/bloc/theme_cubit.dart';
 import 'presentation/pages/home_page.dart';
 
 void main() async {
@@ -14,6 +15,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(BloodPressureModelAdapter());
   await Hive.openBox<BloodPressureModel>('bp_box');
+  await Hive.openBox('settings_box');
 
   runApp(const MyApp());
 }
@@ -23,12 +25,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => BPBloc(HiveService())..add(LoadBP()),
-      child: MaterialApp(
-        theme: AppTheme.lightTheme,
-        debugShowCheckedModeBanner: false,
-        home: const HomePage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => BPBloc(HiveService())..add(LoadBP())),
+        BlocProvider(create: (_) => ThemeCubit()),
+      ],
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, themeMode) {
+          return MaterialApp(
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeMode,
+            debugShowCheckedModeBanner: false,
+            home: const HomePage(),
+          );
+        },
       ),
     );
   }
