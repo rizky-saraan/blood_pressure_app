@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/bp_bloc.dart';
+import '../../core/utils/excel_service.dart';
 
 class GraphicPage extends StatelessWidget {
   const GraphicPage({super.key});
@@ -10,15 +11,33 @@ class GraphicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
+        iconTheme: IconThemeData(color: Theme.of(context).appBarTheme.foregroundColor),
+        title: Text(
           "Dashboard Grafik",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.file_download, color: Theme.of(context).appBarTheme.foregroundColor),
+            tooltip: 'Export ke Excel',
+            onPressed: () async {
+              final state = context.read<BPBloc>().state;
+              if (state is BPLoaded && state.data.isNotEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Menyiapkan file Excel..."), duration: Duration(seconds: 1)),
+                );
+                await ExcelService.exportData(state.data);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Belum ada data untuk di-export")),
+                );
+              }
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<BPBloc, BPState>(
         builder: (context, state) {
