@@ -19,4 +19,15 @@ class HiveService {
   }
 
   List<BloodPressureModel> getAll() => box.values.toList().reversed.toList();
+
+  List<BloodPressureModel> getPaginated(int offset, int limit) {
+    final total = box.length;
+    List<BloodPressureModel> result = [];
+    for (int i = 0; i < limit; i++) {
+      int index = total - 1 - offset - i;
+      if (index < 0) break;
+      result.add(box.getAt(index)!);
+    }
+    return result;
+  }
 }

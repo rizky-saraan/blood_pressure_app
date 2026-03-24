@@ -8,8 +8,33 @@ import 'add_page.dart';
 import 'edit_page.dart';
 import 'graphic_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 100) {
+      context.read<BPBloc>().add(LoadMoreBP());
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +71,17 @@ class HomePage extends StatelessWidget {
                   }
 
                   return ListView.builder(
+                    controller: _scrollController,
                     padding: const EdgeInsets.all(16),
-                    itemCount: state.data.length,
+                    itemCount: state.data.length + (state.hasMore ? 1 : 0),
                     itemBuilder: (context, i) {
+                      if (i >= state.data.length) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+                      
                       return BPCard(
                           data: state.data[i],
                           onDelete: () {
