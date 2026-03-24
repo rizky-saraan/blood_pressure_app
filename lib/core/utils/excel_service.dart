@@ -7,15 +7,15 @@ import 'package:path_provider/path_provider.dart';
 import '../../data/models/blood_pressure_model.dart';
 
 class ExcelService {
-  static Future<void> exportData(List<BloodPressureModel> data) async {
+  static Future<void> exportData(List<BloodPressureModel> data, String profileName) async {
     try {
       var excel = Excel.createExcel();
-      Sheet sheetObject = excel['Data Tensi'];
+      Sheet sheetObject = excel['Data $profileName'];
       // The default sheet is 'Sheet1', let's remove it if we created a new one
-      if (excel.getDefaultSheet() != 'Data Tensi') {
+      if (excel.getDefaultSheet() != 'Data $profileName') {
         excel.delete('Sheet1');
       }
-      excel.setDefaultSheet('Data Tensi');
+      excel.setDefaultSheet('Data $profileName');
 
       // Add Headers
       sheetObject.appendRow([
@@ -56,11 +56,11 @@ class ExcelService {
       var fileBytes = excel.save();
       if (fileBytes != null) {
         final directory = await getTemporaryDirectory();
-        final filePath = '${directory.path}/Riwayat_Tekanan_Darah.xlsx';
+        final filePath = '${directory.path}/Riwayat_Tensi_$profileName.xlsx';
         File file = File(filePath);
         await file.writeAsBytes(fileBytes);
         
-        await Share.shareXFiles([XFile(filePath)], text: 'Export Data Tekanan Darah');
+        await Share.shareXFiles([XFile(filePath)], text: 'Export Data Tekanan Darah ($profileName)');
       }
     } catch (e) {
       debugPrint("Error exporting Excel: $e");

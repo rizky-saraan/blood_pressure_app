@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/bp_bloc.dart';
+import '../bloc/profile_cubit.dart';
 import '../../core/utils/excel_service.dart';
 import '../../data/models/blood_pressure_model.dart';
 
@@ -105,12 +106,13 @@ class _GraphicPageState extends State<GraphicPage> {
             icon: Icon(Icons.file_download, color: Theme.of(context).appBarTheme.foregroundColor),
             tooltip: 'Export ke Excel',
             onPressed: () async {
+              final activeProfile = context.read<ProfileCubit>().state.activeProfile;
               final state = context.read<BPBloc>().state;
               if (state is BPLoaded && state.data.isNotEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Menyiapkan file Excel..."), duration: Duration(seconds: 1)),
                 );
-                await ExcelService.exportData(state.data);
+                await ExcelService.exportData(state.data, activeProfile);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Belum ada data untuk di-export")),

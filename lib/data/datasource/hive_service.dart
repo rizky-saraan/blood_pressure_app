@@ -1,9 +1,12 @@
-import 'package:hive/hive.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/blood_pressure_model.dart';
 
 class HiveService {
-  final box = Hive.box<BloodPressureModel>('bp_box');
+  Box<BloodPressureModel> get box {
+    final settingsBox = Hive.box('settings_box');
+    final active = settingsBox.get('active_profile', defaultValue: 'Saya');
+    return Hive.box<BloodPressureModel>('bp_box_$active');
+  }
 
   Future<void> add(BloodPressureModel data) async {
     await box.add(data);
